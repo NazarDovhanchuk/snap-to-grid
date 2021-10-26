@@ -2,15 +2,11 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React from 'react';
 
-import './block.scss';
+import './square.scss';
 
 const Square = (): JSX.Element => {
   const dragStartHandler = (event: any) => {
-    event.dataTransfer.setData('className', event.target.className);
-  };
-
-  const dragOnLeaveHandler = (event: any) => {
-    event.preventDefault();
+    event.dataTransfer.setData('square', event.target.className);
   };
 
   return (
@@ -18,7 +14,6 @@ const Square = (): JSX.Element => {
       draggable
       className="square"
       onDragStart={(e) => dragStartHandler(e)}
-      onDragLeave={(e) => dragOnLeaveHandler(e)}
     />
   );
 };

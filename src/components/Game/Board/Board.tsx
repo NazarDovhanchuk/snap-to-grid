@@ -1,29 +1,64 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import Square from '../Block/Block';
+import { children } from 'solid-js';
+import Square from '../Square/Square';
+import Circle from '../Circle/Circle';
+import Triangle from '../Triangle/Triangle';
 
 import './board.scss';
 
 const Board = (): JSX.Element => {
-  const [position, setPosition] = useState([0, 0]);
+  const [blockPosition, setBlockPosition] = useState([]);
+  const [circlePosition, setCirclePosition] = useState([]);
+  const [trianglePosition, setTrianglePosition] = useState([]);
 
-  console.log(position);
+  const dragOnDropHandler = (event: any): void => {
+    const target = event.target.className.split(' ').slice(1).map(Number);
+    const square = event.dataTransfer.getData('square');
+    const circle = event.dataTransfer.getData('circle');
+    const triangle = event.dataTransfer.getData('triangle');
 
-  const dragOnDropHandler = (event: any) => {
+    if (square === 'square') {
+      setBlockPosition(target);
+    }
+
+    if (circle === 'circle') {
+      setCirclePosition(target);
+    }
+
+    if (triangle === 'triangle') {
+      setTrianglePosition(target);
+    }
+
     event.preventDefault();
-    event.dataTransfer.getData('className');
-    const pos = event.target.className.split(' ').slice(1).map(Number);
-    setPosition(pos);
   };
 
-  const dragOnOverHandler = (event: { preventDefault: () => void; }) => {
+  const dragOnOverHandler = (event: { preventDefault: () => void; }): void => {
     event.preventDefault();
   };
 
-  const renderSquare = ([x, y]: number[], [blockX, blockY]: number[]): JSX.Element => {
-    const rowMap = (num: number) => {
+  const dragEnd = (event: any): void => {
+    const target = event.target.className;
+
+    if (target === 'square') {
+      setBlockPosition([]);
+    }
+
+    if (target === 'circle') {
+      setCirclePosition([]);
+    }
+
+    if (target === 'triangle') {
+      setTrianglePosition([]);
+    }
+
+    event.preventDefault();
+  };
+
+  const renderSquare = ([x, y]: number[]): JSX.Element => {
+    const rowMap = (num: number): number[] => {
       const arr = [];
 
       for (let i = 0; i < num; i++) {
@@ -33,7 +68,7 @@ const Board = (): JSX.Element => {
       return arr;
     };
 
-    const columnMap = (num: number) => {
+    const columnMap = (num: number): number[] => {
       const arr = [];
 
       for (let i = 0; i < num; i++) {
@@ -42,8 +77,8 @@ const Board = (): JSX.Element => {
 
       return arr;
     };
-    const resultColumn: number[] = columnMap(y);
-    const resultRow: number[] = rowMap(x);
+    const resultColumn = columnMap(y);
+    const resultRow = rowMap(x);
 
     return (
       <div className="board">
@@ -51,12 +86,16 @@ const Board = (): JSX.Element => {
           <div key={item} className="board__row">
             {resultColumn.map((el) => (
               <div
-                onDrop={(e) => dragOnDropHandler(e)}
-                onDragOver={(e) => dragOnOverHandler(e)}
+                onDragEnd={(e): void => dragEnd(e)}
+                onDrop={(e): void => dragOnDropHandler(e)}
+                onDragOver={(e): void => dragOnOverHandler(e)}
                 key={el}
                 className={`board__square ${el} ${index}`}
+                id={`circle ${el} ${index}`}
               >
-                {(blockX === el && blockY === index) ? <Square /> : null}
+                {(blockPosition[0] === el && blockPosition[1] === index) ? <Square /> : null}
+                {(circlePosition[0] === el && circlePosition[1] === index) ? <Circle /> : null}
+                {(trianglePosition[0] === el && trianglePosition[1] === index) ? <Triangle /> : null}
               </div>
             ))}
           </div>
@@ -66,7 +105,7 @@ const Board = (): JSX.Element => {
   };
 
   const squares = [];
-  squares.push(renderSquare([5, 5], position));
+  squares.push(renderSquare([5, 5]));
 
   return (
     <>

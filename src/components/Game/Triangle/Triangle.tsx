@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 
-import './circle.scss';
+import './triangle.scss';
 
-const Circle = (): JSX.Element => {
+const Triangle = (): JSX.Element => {
   const dragStartHandler = (event: any): void => {
-    event.dataTransfer.setData('circle', event.target.className);
+    event.dataTransfer.setData('triangle', event.target.className);
   };
 
   const dragOnLeaveHandler = (event: React.DragEvent<HTMLDivElement>): void => {
@@ -16,10 +16,10 @@ const Circle = (): JSX.Element => {
     <div
       onDragStart={(e):void => dragStartHandler(e)}
       onDragLeave={(e):void => dragOnLeaveHandler(e)}
-      className="circle"
+      className="triangle"
       draggable
     />
   );
 };
 
-export default Circle;
+export default Triangle;
