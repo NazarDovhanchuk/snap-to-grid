@@ -1,4 +1,5 @@
 .selectItemBlock {
+  background-color: wheat;
   width: 500px;
   height: 500px;
   border: 2px solid black;
@@ -6,9 +7,6 @@
 
 .common {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-content: space-around;
   border-bottom: 2px solid black;
-  background-color: wheat;
-  height: 100px;
 }

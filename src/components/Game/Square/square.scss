@@ -1,6 +1,6 @@
-.square {
-  margin: 0 auto;
-  height: 50px;
-  width: 50px;
-  background-color: black;
+
+.board__square {
+  min-height: 120px;
+  height: 60vh;
+  // flex-grow: 1;
 }
